@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlq.blog.dao.TalkDao">
+
+    <select id="listTalks" resultType="com.zlq.blog.dto.TalkDTO">
+        SELECT
+        temp.id,
+        temp.nickname,
+        temp.avatar,
+        temp.content,
+        temp.images,
+        temp.is_top,
+        temp.create_time
+        FROM
+        ((SELECT
+        t.id,
+        nickname,
+        avatar,
+        content,
+        images,
+        t.is_top,
+        t.create_time
+        FROM
+        tb_talk t
+        JOIN tb_user_info ui ON t.user_id = ui.id
+        WHERE
+        t.status = 1)
+        <if test="userId != null">
+            UNION
+            (SELECT
+            t.id,
+            nickname,
+            avatar,
+            content,
+            images,
+            t.is_top,
+            t.create_time
+            FROM
+            tb_talk t
+            JOIN tb_user_info ui ON t.user_id = ui.id
+            WHERE
+            t.user_id = #{userId}
+            AND
+            t.status = 2)
+        </if>
+        )temp
+        ORDER BY
+        temp.is_top DESC,
+        temp.id DESC
+        LIMIT #{current},#{size}
+    </select>
+
+    <select id="listBackTalks" resultType="com.zlq.blog.dto.TalkBackDTO">
+        SELECT
+        t.id,
+        nickname,
+        avatar,
+        content,
+        images,
+        t.is_top,
+        t.status,
+        t.create_time
+        FROM
+        tb_talk t
+        JOIN tb_user_info ui ON t.user_id = ui.id
+        <where>
+            <if test="condition.status != null">
+                t.status = #{condition.status}
+            </if>
+            <if test="isAdmin == false">
+                AND
+                t.user_id = #{userId}
+            </if>
+        </where>
+        ORDER BY
+        t.is_top DESC,
+        t.id DESC
+        LIMIT #{current},#{size}
+    </select>
+
+    <select id="getTalkById" resultType="com.zlq.blog.dto.TalkDTO">
+        ( SELECT
+        t.id,
+        nickname,
+        avatar,
+        content,
+        images,
+        t.create_time
+        FROM
+        tb_talk t
+        JOIN tb_user_info ui ON t.user_id = ui.id
+        WHERE
+        t.id = #{talkId}
+        AND t.STATUS = 1
+        )
+        <if test="userId != null">
+            UNION
+            (
+            SELECT
+            t.id,
+            nickname,
+            avatar,
+            content,
+            images,
+            t.create_time
+            FROM
+            tb_talk t
+            JOIN tb_user_info ui ON t.user_id = ui.id
+            WHERE
+            t.user_id = #{userId}
+            AND
+            t.id = #{talkId}
+            AND t.STATUS = 2
+            )
+        </if>
+    </select>
+
+
+    <select id="getBackTalkById" resultType="com.zlq.blog.dto.TalkBackDTO">
+        SELECT t.id,
+               nickname,
+               avatar,
+               content,
+               images,
+               t.is_top,
+               t.status,
+               t.create_time
+        FROM tb_talk t
+                 JOIN tb_user_info ui ON t.user_id = ui.id
+        WHERE t.id = #{talkId}
+        <if test="isAdmin == false">
+            AND
+            t.user_id = #{userId}
+        </if>
+    </select>
+
+</mapper>

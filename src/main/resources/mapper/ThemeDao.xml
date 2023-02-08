@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zlq.blog.dao.ThemeDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.zlq.blog.entity.ThemeEntity" id="themeMap">
+        <result property="id" column="id"/>
+        <result property="themeTitle" column="theme_title"/>
+        <result property="themeContent" column="theme_content"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+    <select id="selectIsUsed" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM( SELECT * FROM tb_theme where id IN
+        <foreach item="item" index="index" collection="ids"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        ) temp
+        WHERE temp.status = 1;
+    </select>
+
+
+</mapper>
