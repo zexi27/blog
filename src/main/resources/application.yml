@@ -10,9 +10,9 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.31.88:3306/blog?serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    url: jdbc:mysql://xxx:3306/blog?serverTimezone=Asia/Shanghai&allowMultiQueries=true
     username: root
-    password: zaxscdvf
+    password: xxx
     hikari:
       minimum-idle: 5
       # 空闲连接存活最大时间，默认600000（10分钟）
@@ -30,15 +30,15 @@ spring:
       connection-test-query: SELECT 1
   # redis配置
   redis:
-    host: 192.168.31.88
+    host: xxx
     port: 6379
-    password: zaxscdvf
+    password: xxx
   # mq配置
   rabbitmq:
-    host: 192.168.31.88
+    host: xxx
     port: 5672
-    username: admin
-    password: admin
+    username: xxx
+    password: xxx
     listener:
       simple:
         retry:
@@ -53,7 +53,7 @@ spring:
   mail:
     host: smtp.qq.com
     username: 804492004@qq.com
-    password: vinsxwuaqlhbbgac
+    password: xxx
     default-encoding: UTF-8
     port: 587
     properties:
@@ -89,11 +89,11 @@ upload:
     # 本地文件存储路径
     path: /usr/local/upload/
   oss:
-    url: "https://figure-bed-liqun.oss-cn-beijing.aliyuncs.com/"
+    url: "xxx"
     endpoint: "http://oss-cn-beijing.aliyuncs.com"
-    accessKeyId: "LTAI5tL12dtSKbYrqcyL6poy"
-    accessKeySecret: "XifYvYNMhI8zRg1THdEkDsBgT94lA8"
-    bucketName: "figure-bed-liqun"
+    accessKeyId: "xxx"
+    accessKeySecret: "xxx"
+    bucketName: "xxxn"
   cos:
     url: http://Bucket域名/
     secretId: cos的secretId
